@@ -6,8 +6,13 @@ public class characterController : MonoBehaviour
 {
     public float speed;
     public float jumpForce;
+    public float gravityAccel;
+    public Vector2 baseGravity;
+    private Vector2 gravity;
+    public float jumpCap;
 
     public float xInput;
+    public KeyCode jump;
     Rigidbody2D rb;
 
     public LayerMask groundLayer;
@@ -19,25 +24,38 @@ public class characterController : MonoBehaviour
 
     bool groundCheck()
     {
-        if (Physics2D.Raycast(transform.position, Vector2.down, 0.55f, groundLayer))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return Physics2D.Raycast(transform.position, Vector2.down, 0.55f, groundLayer);
     }
 
+    public float jumpHeight = 0f;
     void Update()
     {
-        xInput = Input.GetAxis("Horizontal");
-
-        if (groundCheck())
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        xInput = Input.GetAxisRaw("Horizontal");
+        if (rb.velocity.y < 0.1 && groundCheck()) {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+        if (Input.GetKey(jump) && groundCheck()) {
+            jumpHeight += Time.deltaTime;
+            if (jumpHeight > jumpCap) {
+                jumpHeight = jumpCap;
+            }
+        }
+        if (Input.GetKeyUp(jump)) {
+            rb.velocity = new Vector2(speed*xInput*jumpHeight, jumpHeight*jumpForce);
+            jumpHeight = 0;
         }
 
-        rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
+        if (rb.velocity.y < 0) {
+            gravity = baseGravity * gravityAccel;
+        } else {
+            gravity = baseGravity;
+        }
+
+
+        //rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
+    }
+
+    private void FixedUpdate() {
+        rb.velocity += gravity;
     }
 }
