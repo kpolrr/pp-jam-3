@@ -62,11 +62,16 @@ public class characterController : MonoBehaviour
         //rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
+    public void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.layer == spikeLayer) {
             Debug.Log("hi");
             rb.velocity = new Vector2(rb.velocity.x*-1, 10);
         }
+    }
+
+    public void spike()
+    {
+        Debug.Log("works");
     }
 
     private void FixedUpdate() {
