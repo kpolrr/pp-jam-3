@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class characterController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class characterController : MonoBehaviour
     public Vector2 baseGravity;
     private Vector2 gravity;
     public float jumpCap;
+
+    public Image jumpBar;
 
     public float xInput;
     public KeyCode jump;
@@ -51,7 +54,10 @@ public class characterController : MonoBehaviour
             gravity = baseGravity;
         }
 
-
+        if (jumpBar.fillAmount != jumpHeight / jumpCap)
+        {
+            jumpBar.fillAmount = Mathf.Lerp(jumpBar.fillAmount, jumpHeight / jumpCap, 0.05f);
+        }
         //rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
     }
 
