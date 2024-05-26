@@ -28,7 +28,7 @@ public class characterController : MonoBehaviour
 
     bool groundCheck()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, 0.55f, groundLayer);
+        return Physics2D.Raycast(transform.position, Vector2.down, 1.1f, groundLayer);
     }
 
     public float jumpHeight = 0f;
