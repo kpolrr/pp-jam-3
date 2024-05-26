@@ -305,9 +305,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  spikeLayer:
-    serializedVersion: 2
-    m_Bits: 64
+  spikeForce: 10
   jumpHeight: 0
 --- !u!1 &37127458
 GameObject:
@@ -1303,7 +1301,6 @@ GameObject:
   - component: {fileID: 1587470642}
   - component: {fileID: 1587470646}
   - component: {fileID: 1587470645}
-  - component: {fileID: 1587470647}
   m_Layer: 6
   m_Name: Spikes
   m_TagString: Untagged
@@ -1577,22 +1574,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &1587470647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1587470640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95c5bbd65c32569409bf8c7f9e4b9543, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterController: {fileID: 12804429}
-  player:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &1780555017
 GameObject:
   m_ObjectHideFlags: 0

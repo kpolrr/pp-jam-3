@@ -19,7 +19,7 @@ public class characterController : MonoBehaviour
     Rigidbody2D rb;
 
     public LayerMask groundLayer;
-    public LayerMask spikeLayer;
+    public float spikeForce;
 
     void Start()
     {
@@ -62,17 +62,22 @@ public class characterController : MonoBehaviour
         //rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
     }
 
-    public void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.layer == spikeLayer) {
-            Debug.Log("hi");
-            rb.velocity = new Vector2(rb.velocity.x*-1, 10);
+    
+    private Vector2 contactPos;
+    void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.layer == 6) {
+            contactPos = new Vector2(0,0);
+            foreach (ContactPoint2D i in other.contacts) {
+                contactPos += i.point;
+            }
+            contactPos /= other.contacts.Length;
+            contactPos = (Vector2)transform.position - contactPos;
+            contactPos = new Vector2(contactPos.x+Random.Range(-0.05f,0.05f),contactPos.y+Random.Range(-0.05f,0.05f));
+            contactPos.Normalize();
+            rb.velocity += contactPos * spikeForce;
         }
     }
 
-    public void spike()
-    {
-        Debug.Log("works");
-    }
 
     private void FixedUpdate() {
         rb.velocity += gravity;
