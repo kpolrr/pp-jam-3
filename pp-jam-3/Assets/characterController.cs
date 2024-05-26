@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class characterController : MonoBehaviour
@@ -12,11 +13,15 @@ public class characterController : MonoBehaviour
     private Vector2 gravity;
     public float jumpCap;
 
+    public Sprite chickenDown;
+    public Sprite chickenUp;
+
     public Image jumpBar;
 
     public float xInput;
     public KeyCode jump;
     Rigidbody2D rb;
+    SpriteRenderer sr;
 
     public LayerMask groundLayer;
     public float spikeForce;
@@ -24,6 +29,7 @@ public class characterController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     bool groundCheck()
@@ -39,13 +45,21 @@ public class characterController : MonoBehaviour
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
         if (Input.GetKey(jump) && groundCheck()) {
+            sr.sprite = chickenDown;
             jumpHeight += Time.deltaTime;
             if (jumpHeight > jumpCap) {
                 jumpHeight = jumpCap;
             }
         }
         if (Input.GetKeyUp(jump)) {
+            sr.sprite = chickenUp;
             rb.velocity = new Vector2(speed*xInput*jumpHeight, jumpHeight*jumpForce);
+            if (rb.velocity.x < 0)
+            {
+                sr.flipX = true;
+            } else if (rb.velocity.x > 0) {
+                sr.flipX = false;
+            }
             jumpHeight = 0;
         }
 
@@ -58,6 +72,14 @@ public class characterController : MonoBehaviour
         if (jumpBar.fillAmount != jumpHeight / jumpCap)
         {
             jumpBar.fillAmount = Mathf.Lerp(jumpBar.fillAmount, jumpHeight / jumpCap, 0.05f);
+        }
+
+        if (transform.position.x > -1.5 && transform.position.y > 158.4)
+        {
+            Debug.Log("you win");
+            transform.position = new Vector3(0, 0, -6);
+            SceneManager.UnloadSceneAsync(1);
+            SceneManager.LoadScene(2);
         }
         //rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
     }
