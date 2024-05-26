@@ -19,6 +19,7 @@ public class characterController : MonoBehaviour
     Rigidbody2D rb;
 
     public LayerMask groundLayer;
+    public LayerMask spikeLayer;
 
     void Start()
     {
@@ -59,6 +60,13 @@ public class characterController : MonoBehaviour
             jumpBar.fillAmount = Mathf.Lerp(jumpBar.fillAmount, jumpHeight / jumpCap, 0.05f);
         }
         //rb.velocity = new Vector2(xInput * speed, rb.velocity.y);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.layer == spikeLayer) {
+            Debug.Log("hi");
+            rb.velocity = new Vector2(rb.velocity.x*-1, 10);
+        }
     }
 
     private void FixedUpdate() {
